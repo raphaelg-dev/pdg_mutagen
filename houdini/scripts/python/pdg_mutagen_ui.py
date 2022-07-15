@@ -209,14 +209,14 @@ class StartupInterface(QtWidgets.QWidget):
 
 
 	def _setupWizard_ButtonClicked(self):
-		print "Creating Mutagen PDG Graph Template...\n"
+		print('Creating Mutagen PDG Graph Template...\n')
 
 		pdg_mutagen.createMutagenSetup()
 
 
 	
 	def _viewWizard_ButtonClicked(self):
-		print "Starting View Wizard...\n"
+		print("Starting View Wizard...\n")
 
 		#add viewer interface
 		viewer_interface = ViewerInterface(self._root_if)
@@ -354,8 +354,8 @@ class ViewerInterface(QtWidgets.QWidget):
 		#####load marked selection fir grid layout from file and initialize
 		marked_file = self._marked_filepath
 		if os.path.isfile(marked_file):
-			print "Saved Marking State File found:\n{}".format(marked_file)
-			print "Initializing UI...\n"
+			print("Saved Marking State File found:\n{}".format(marked_file))
+			print("Initializing UI...\n")
 
 			with open(marked_file, 'r') as f:
 				wedge_mark_dict = f.read()
@@ -368,7 +368,7 @@ class ViewerInterface(QtWidgets.QWidget):
 				mark_button = self._cell_dict[i].children()[0]
 				mark_button.setChecked(wedge_mark_dict[i])
 
-			print "Initializing UI successfull\n"
+			print("Initializing UI successfull\n")
 			
 		
 
@@ -465,7 +465,7 @@ class ViewerInterface(QtWidgets.QWidget):
 			#print "M Key pressed"
 		
 			self._markButtonClear()
-			print "\nAll marked Wedges cleared\n"
+			print("\nAll marked Wedges cleared\n")
 
 
 
@@ -487,7 +487,7 @@ class ViewerInterface(QtWidgets.QWidget):
 
 
 		#iterate over grid layout / cells
-		for idx in self._cell_dict.keys():
+		for idx in list(self._cell_dict.keys()):
 			#print (idx, " > ", self._cell_dict[idx])
 
 			mark_button = self._cell_dict[idx].children()[0]
@@ -588,18 +588,18 @@ class ViewerInterface(QtWidgets.QWidget):
 		path_split = path.split(wedge_prefix)
 		path = path_split[0] + wedge_prefix + sender_idx
 
-		print "Open Wedge Sequence {} in RV Player:".format(sender_idx)
-		print path
-		print "\n"
+		print("Open Wedge Sequence {} in RV Player:".format(sender_idx))
+		print(path)
+		print("\n")
 
 		
 		if os.path.exists(path):
 			try:
 				subprocess.Popen(["rv", path])
 			except:
-				print "RV may not be installed on your system or net set in $PATH"
+				print("RV may not be installed on your system or net set in $PATH")
 		else:
-			print "Path does not exist or you may not have access to it."
+			print("Path does not exist or you may not have access to it.")
 
 
 
@@ -613,9 +613,9 @@ class ViewerInterface(QtWidgets.QWidget):
 		path_split = path.split(wedge_prefix)
 		path = path_split[0] + wedge_prefix + sender_idx
 
-		print "Open Wedge Sequence {} in Explorer:".format(sender_idx)
-		print path
-		print "\n"
+		print("Open Wedge Sequence {} in Explorer:".format(sender_idx))
+		print(path)
+		print("\n")
 
 
 		if os.path.exists(path):
@@ -630,7 +630,7 @@ class ViewerInterface(QtWidgets.QWidget):
 				subprocess.Popen(["open", path])
 
 		else:
-			print "Path does not exist or you may not have access to it."
+			print("Path does not exist or you may not have access to it.")
 
 
 
@@ -645,7 +645,7 @@ class ViewerInterface(QtWidgets.QWidget):
 		#print sender
 		#print sender.isChecked()
 		
-		for i in self._cell_dict.keys():
+		for i in list(self._cell_dict.keys()):
 			sel_button = self._cell_dict[i].children()[2]
 			if i != sender_idx:
 				sel_button.setChecked(False)
@@ -671,8 +671,8 @@ class ViewerInterface(QtWidgets.QWidget):
 					work_item_id = work_item.id
 					
 					self._wedge_anchor_node.setSelectedWorkItem(work_item_id)
-					print "\nWork Item selected:"
-					print "Wedge Index: " + wdg_idx
+					print("\nWork Item selected:")
+					print("Wedge Index: " + wdg_idx)
 					#print "ID: " + str(work_item_id)
 		
 
@@ -690,9 +690,9 @@ class ViewerInterface(QtWidgets.QWidget):
 		sender = self._cell_dict[idx].children()[0]
 
 		if sender.isChecked():
-			print "Wedge Index marked: {}".format(sender_idx)
+			print("Wedge Index marked: {}".format(sender_idx))
 		else:
-			print "Wedge Index unmarked: {}".format(sender_idx)
+			print("Wedge Index unmarked: {}".format(sender_idx))
 
 		#reset focus to webview
 		self._webview.activateWindow()
@@ -705,7 +705,7 @@ class ViewerInterface(QtWidgets.QWidget):
 	
 	def _markButtonClear(self):
 		
-		for i in self._cell_dict.keys():
+		for i in list(self._cell_dict.keys()):
 			mark_button = self._cell_dict[i].children()[0]
 			mark_button.setChecked(False)
 
@@ -715,12 +715,12 @@ class ViewerInterface(QtWidgets.QWidget):
 
 	def _saveMarkedWedges(self):
 
-		print "\nSaving all marked Wedges to Disk...\n"
+		print("\nSaving all marked Wedges to Disk...\n")
 
 
 		wedge_mark_dict = {}
 		
-		for i in self._cell_dict.keys():
+		for i in list(self._cell_dict.keys()):
 			mark_button = self._cell_dict[i].children()[0]
 
 			wedge_mark_dict[i] = mark_button.isChecked()
@@ -730,19 +730,19 @@ class ViewerInterface(QtWidgets.QWidget):
 		#print wedge_mark_dict
 
 		#save to file
-		print "Save Filepath: {}".format(self._marked_filepath)
+		print("Save Filepath: {}".format(self._marked_filepath))
 
 		if not os.path.exists(os.path.dirname(self._marked_filepath)):
 			try:
 				os.makedirs(os.path.dirname(self._marked_filepath))
 			except OSError as exc: # Guard against race condition
 				if exc.errno != errno.EEXIST:
-					print "Saving failed\n"
+					print("Saving failed\n")
 					raise
 
 		with open(self._marked_filepath, "w") as f:
 			f.write(str(wedge_mark_dict))
-			print "Saving successfull\n"
+			print("Saving successfull\n")
 
 
 
@@ -759,11 +759,11 @@ class ViewerInterface(QtWidgets.QWidget):
 
 		mode = mode[0]
 
-		print "\nSetting up new Mutation PDG Graph from marked Wedges...\n"
+		print("\nSetting up new Mutation PDG Graph from marked Wedges...\n")
 
 		marked_idx_list = []
 		
-		for i in self._cell_dict.keys():
+		for i in list(self._cell_dict.keys()):
 			mark_button = self._cell_dict[i].children()[0]
 
 			if mark_button.isChecked():
@@ -773,15 +773,15 @@ class ViewerInterface(QtWidgets.QWidget):
 		num_wedges_marked = len(marked_idx_list)
 
 		if num_wedges_marked > 0:
-			print "List of Wedges to be used:"
-			print marked_idx_list
+			print("List of Wedges to be used:")
+			print(marked_idx_list)
 
 			pdg_mutagen.setupMutationFromMarkedWedges(marked_idx_list, self._wedge_anchor_node, mode)
 
 
 
 		else:
-			print "No Wedges marked. Aborting."
+			print("No Wedges marked. Aborting.")
 			
 
 
@@ -798,11 +798,11 @@ class ViewerInterface(QtWidgets.QWidget):
 def setupWizard(self):
 
 
-	print "\n"*4
-	print "_"*100
-	print "PDG Mutagen Setup Wizard Started..."
-	print "_"*100
-	print "\n"*2
+	print("\n"*4)
+	print("_"*100)
+	print("PDG Mutagen Setup Wizard Started...")
+	print("_"*100)
+	print("\n"*2)
 	
 
 	####initial ui selection
@@ -822,7 +822,7 @@ def setupWizard(self):
 
 
 	self._ffmpeg_node = hou.node(ffmpeg_nodepath)
-	print "FFmpeg Node (Root Node): {}".format(self._ffmpeg_node.name())
+	print("FFmpeg Node (Root Node): {}".format(self._ffmpeg_node.name()))
 
 	#for marked saving...
 	ffmpeg_name = self._ffmpeg_node.name()
@@ -884,7 +884,7 @@ def setupWizard(self):
 
 			self._render_node_pdg = pdgnode
 			#print
-			print "Render Output Top Node: {}".format(self._render_node_pdg.name())
+			print("Render Output Top Node: {}".format(self._render_node_pdg.name()))
 			break
 		
 		
@@ -892,7 +892,7 @@ def setupWizard(self):
 	self._render_outpath = os.path.abspath(os.path.join(os.path.dirname(__file__), self._render_outpath))
 	#change back to forward slashes
 	self._render_outpath = self._render_outpath.replace("\\", "/")
-	print "Render Output ROP Node: {}".format(self._render_node.name())
+	print("Render Output ROP Node: {}".format(self._render_node.name()))
 
 		
 
@@ -918,14 +918,14 @@ def setupWizard(self):
 
 
 
-	print "Image Magick Node: {}".format(self._imagemagick_node.name())
-	print "Wedge Anchor Node: {}".format(self._wedge_anchor_node.name())
-	print "Wedge Root Node: {}".format(self._wedge_root_node.name())
-	print "{} Nodes found in PDG Chain (Upstream from Root Node)".format(len(self._pdgchain_nodes))
-	print "{} Graph Splits found".format(self._num_pdg_splits)
+	print("Image Magick Node: {}".format(self._imagemagick_node.name()))
+	print("Wedge Anchor Node: {}".format(self._wedge_anchor_node.name()))
+	print("Wedge Root Node: {}".format(self._wedge_root_node.name()))
+	print("{} Nodes found in PDG Chain (Upstream from Root Node)".format(len(self._pdgchain_nodes)))
+	print("{} Graph Splits found".format(self._num_pdg_splits))
 	if self._num_pdg_splits > 0:
-		print "Split Part {} selected\n".format(self._split_p)
-	print "\n"
+		print("Split Part {} selected\n".format(self._split_p))
+	print("\n")
 
 
 
@@ -944,17 +944,17 @@ def setupWizardViewer(self):
 
 
 	self._num_wedges = len(self._wdg_idx_l)
-	print "Number of Wedges {}".format(self._num_wedges)
+	print("Number of Wedges {}".format(self._num_wedges))
 
 	self._num_wedges_split = self._num_wedges / (self._num_pdg_splits + 1)
 	if self._num_pdg_splits > 0:
-		print "Number of Wedges per Split {}".format(self._num_wedges_split)
+		print("Number of Wedges per Split {}".format(self._num_wedges_split))
 	
 
 	#set start index for cells
 	self._start_idx = self._num_wedges_split * self._split_p
-	print "Start Index set to: {}".format(self._start_idx)
-	print "\n"
+	print("Start Index set to: {}".format(self._start_idx))
+	print("\n")
 
 
 
@@ -969,18 +969,18 @@ def setupWizardViewer(self):
 
 	#check if video file is present
 	if os.path.isfile(self._videofile):
-		print "Videofile:\n{}\n".format(self._videofile)
+		print("Videofile:\n{}\n".format(self._videofile))
 
 	else:
 		raise Exception("\n{}\nVideofile does not exist. Make sure the PDG Graph is completely rendered in advance.\nAlso be aware that if you use any versioning in Filepaths, the Mutagen Viewer will only work in the Hipfile version you rendered out when Filepaths are not explicitly expanded.".format(self._videofile))
 
 
-	print "\nRender Output Path:\n{}\n".format(self._render_outpath)
+	print("\nRender Output Path:\n{}\n".format(self._render_outpath))
 
 
 
 	self._im_command = self._imagemagick_node.parm("customcommand").eval()
-	print "Image Magick Command:\n{}\n".format(self._im_command)
+	print("Image Magick Command:\n{}\n".format(self._im_command))
 
 	#geoemtry (sizes)
 	geo_str = self._im_command.split("-geometry")[-1]
@@ -1001,17 +1001,17 @@ def setupWizardViewer(self):
 
 
 	self._cell_frame_width = int(geo_str_l[0])
-	print "Cell Width: {}".format(self._cell_frame_width)
+	print("Cell Width: {}".format(self._cell_frame_width))
 	self._cell_frame_height = int(geo_str_l[1])
-	print "Cell Height: {}".format(self._cell_frame_height)
+	print("Cell Height: {}".format(self._cell_frame_height))
 
 	self._cell_frame_height_padding = 18
-	print "Cell Text Height Padding: {}".format(self._cell_frame_height_padding)
+	print("Cell Text Height Padding: {}".format(self._cell_frame_height_padding))
 
 	self._cell_frame_padding_h = int(geo_str_l[2])
-	print "Cell Width Padding: {}".format(self._cell_frame_padding_h)
+	print("Cell Width Padding: {}".format(self._cell_frame_padding_h))
 	self._cell_frame_padding_v = int(geo_str_l[3])
-	print "Cell Height Padding: {}".format(self._cell_frame_padding_v)
+	print("Cell Height Padding: {}".format(self._cell_frame_padding_v))
 
 
 	
@@ -1021,10 +1021,10 @@ def setupWizardViewer(self):
 	self._num_width = 0
 	self._num_height = 0
 
-	print "\n"
+	print("\n")
 	#check if -tile arg is set
 	if "-tile " in self._im_command:
-		print "Explicit Tiling set in IM Command"
+		print("Explicit Tiling set in IM Command")
 		tile_str = self._im_command.split("-tile")[-1]
 		tile_str = tile_str.split(" ")
 		tile_str = tile_str[1].split("x")
@@ -1035,17 +1035,17 @@ def setupWizardViewer(self):
 			self._num_width = int(tile_str[0])
 			self._num_height = int(tile_str[1])
 		elif (tile_str[0] != "") and (tile_str[1] == ""):
-			print "Only X Tiles set..."
+			print("Only X Tiles set...")
 			self._num_width = int(tile_str[0])
 			self._num_height = self._num_total / self._num_width
 		elif (tile_str[0] == "") and (tile_str[1] != ""):
-			print "Only Y Tiles set..."
+			print("Only Y Tiles set...")
 			self._num_height = int(tile_str[1])
 			self._num_width = self._num_total / self._num_height
 
 	#if -tile arg is not set
 	else:
-		print "No explicit Tiling set in IM Command. Using default Image Magick Tiling Algorithm"
+		print("No explicit Tiling set in IM Command. Using default Image Magick Tiling Algorithm")
 
 		n = self._num_wedges_split
 
@@ -1066,27 +1066,27 @@ def setupWizardViewer(self):
 
 
 	#print results
-	print "Number of Cells in X: {}".format(self._num_width)
-	print "Number of Cells in Y: {}".format(self._num_height)
-	print "Total Number of Cells: {}".format(self._num_total)
-	print "\n"
+	print("Number of Cells in X: {}".format(self._num_width))
+	print("Number of Cells in Y: {}".format(self._num_height))
+	print("Total Number of Cells: {}".format(self._num_total))
+	print("\n")
 	
 
 	self._frame_width = (self._cell_frame_width + (self._cell_frame_padding_h*2)) * self._num_width
-	print "Frame Width: {}px".format(self._frame_width)
+	print("Frame Width: {}px".format(self._frame_width))
 	self._frame_height = (self._cell_frame_height + (self._cell_frame_padding_v*2) + self._cell_frame_height_padding) * self._num_height
-	print "Frame Height: {}px".format(self._frame_height)
-	print "\n"
+	print("Frame Height: {}px".format(self._frame_height))
+	print("\n")
 	
 	#set colors
 	self._bg_color = "background-color: rgb(48, 48, 48)"
 	self._fg_color = "background-color: rgb(58, 58, 58)"
 
 
-	print "_"*100
-	print "PDG Mutagen Setup Wizard Complete"
-	print "_"*100
-	print "\n"*2
+	print("_"*100)
+	print("PDG Mutagen Setup Wizard Complete")
+	print("_"*100)
+	print("\n"*2)
 
 
 
@@ -1102,7 +1102,7 @@ def getWedgeIndexList(self):
 
 	#generate static items first to be able to access
 	self._wedge_anchor_node.generateStaticItems()
-	print "Generating Static Work Items..."
+	print("Generating Static Work Items...")
 	time.sleep(3)
 
 	try:
@@ -1132,5 +1132,5 @@ def getWedgeIndexList(self):
 		#return self._wdg_idx_l
 
 	except Exception as e:
-		print e
-		print "\nStatic Work Items could not be generated.\nPlease right click 'Generate Node' on last Wedge Node in chain and initialize manually.\nThis only has to be done once after opening Scene. This is a current Limitation.\n"
+		print(e)
+		print("\nStatic Work Items could not be generated.\nPlease right click 'Generate Node' on last Wedge Node in chain and initialize manually.\nThis only has to be done once after opening Scene. This is a current Limitation.\n")

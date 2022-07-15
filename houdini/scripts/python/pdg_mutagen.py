@@ -361,9 +361,9 @@ class PDGGraphObject():
 
 def insertGraphSplit():
 
-	print "\n"*2
-	print "_"*100
-	print "Splitting PDG ImageMagick Montage..."
+	print("\n"*2)
+	print("_"*100)
+	print("Splitting PDG ImageMagick Montage...")
 
 
 	#hardcoded to 2 for now
@@ -432,10 +432,10 @@ def insertGraphSplit():
 	old_nodes[-1].setInput(0, new_split_node, 0)
 
 
-	print "_"*100
-	print "Finished splitting PDG ImageMagick Montage successfully"
-	print "_"*100
-	print "\n"*2
+	print("_"*100)
+	print("Finished splitting PDG ImageMagick Montage successfully")
+	print("_"*100)
+	print("\n"*2)
 	
 
 
@@ -459,18 +459,18 @@ def convertTakesToWedgeUI():
 		if sel_node.type() == hou.nodeType("Top/wedge"):
 			parent = sel_node.parent()
 			wedge = sel_node
-			print "Selected Wedge Node: {}".format(wedge.name())
+			print("Selected Wedge Node: {}".format(wedge.name()))
 
 		else:
 			if sel_node.parent().type() == hou.nodeType("Object/topnet"):
 				parent = sel_node.parent()
 				pos = sel_node.position()
-				print "Parent TOP Network to create Wedge Node in: {}\n".format(parent.name())
+				print("Parent TOP Network to create Wedge Node in: {}\n".format(parent.name()))
 				
 			elif sel_node.type() == hou.nodeType("Object/topnet"):
 				parent = sel_node
 				pos = [0, 0]
-				print "Parent TOP Network to create Wedge Node in: {}\n".format(parent.name())
+				print("Parent TOP Network to create Wedge Node in: {}\n".format(parent.name()))
 		
 		
 			#create node and set parms    
@@ -480,7 +480,7 @@ def convertTakesToWedgeUI():
 
 
 	except:
-		print "No TOP Node, Wedge TOP, or TOPnet selected. Creating default TOPnet."
+		print("No TOP Node, Wedge TOP, or TOPnet selected. Creating default TOPnet.")
 		parent = hou.node("obj/").createNode("topnet", "topnet_glob")
 		wedge = parent.createNode("wedge", "wedge_takes")
 		wedge.move((0, -3))
@@ -507,9 +507,9 @@ def convertTakesToWedgeUI():
 def convertTakesToWedge(wedge_node, remove_takes):
 
 
-	print "\n\nStarting to convert Takes to TOP Wedge...\n"
-	print "_"*100
-	print "\n"
+	print("\n\nStarting to convert Takes to TOP Wedge...\n")
+	print("_"*100)
+	print("\n")
 
 
 	wedge = wedge_node
@@ -534,9 +534,9 @@ def convertTakesToWedge(wedge_node, remove_takes):
 	num_takes = len(takelist)
 
 
-	print "Root Take: {}".format(roottake.name())
-	print "Number of Child Takes / Wedge Count: {}".format(num_takes)
-	print "Takelist: " + str(takelist) + "\n"
+	print("Root Take: {}".format(roottake.name()))
+	print("Number of Child Takes / Wedge Count: {}".format(num_takes))
+	print("Takelist: " + str(takelist) + "\n")
 
 
 
@@ -556,12 +556,12 @@ def convertTakesToWedge(wedge_node, remove_takes):
 					#print "Take Parameter appended to list: " + str(takeparm)
 			
 		num_takeparms = len(takeparm_list)
-		print "{} edited Parameters found in Takes\n".format(num_takeparms)
+		print("{} edited Parameters found in Takes\n".format(num_takeparms))
 
 
 
-		print "\nProcessing all edited Parameters in Takes."
-		print "This might take up to a couple of minutes for very complex setups..."
+		print("\nProcessing all edited Parameters in Takes.")
+		print("This might take up to a couple of minutes for very complex setups...")
 			
 		#set inital parms
 		parm_wedgecount = wedge.parm("wedgecount")
@@ -723,12 +723,12 @@ def convertTakesToWedge(wedge_node, remove_takes):
 		wedge.setSelected(on=True, clear_all_selected=True)
 		wedge.setCurrent(1)
 
-		print "\n"
-		print "_"*100
-		print "Takes successfully converted to TOP Wedge."
-		print "Creating Node UI, this might take another couple seconds."
-		print "_"*100
-		print "\n"*2
+		print("\n")
+		print("_"*100)
+		print("Takes successfully converted to TOP Wedge.")
+		print("Creating Node UI, this might take another couple seconds.")
+		print("_"*100)
+		print("\n"*2)
 
 
 	#exception when no child takes found
@@ -768,7 +768,7 @@ def selectWedgeIndexUI():
 				node = sel_node
 	
 	else:
-		print "No Wedge TOP selected. Please choose..."
+		print("No Wedge TOP selected. Please choose...")
 		nodepath = hou.ui.selectNode(title="Select Wedge TOP Node (Last Wedge in Graph Chain)", custom_node_filter_callback=_isWedgeNode)
 		node = hou.node(nodepath)
 		
@@ -778,7 +778,7 @@ def selectWedgeIndexUI():
 	
 	#enter target idx
 	target_wdg_idx = hou.ui.readInput("Please enter Wedge Index. Example: '0_1_4'", buttons=('OK',))[1]
-	print "\nTarget Wedge Index: " + target_wdg_idx
+	print("\nTarget Wedge Index: " + target_wdg_idx)
 
 
 	pdgnode = node.getPDGNode()
@@ -820,8 +820,8 @@ def selectWedgeIndex(idx, wedge_node, work_items_in):
 			work_item_id = work_item.id
 			
 			node.setSelectedWorkItem(work_item_id)
-			print "\nWork Item selected:"
-			print "Wedge Index: " + wdg_idx
+			print("\nWork Item selected:")
+			print("Wedge Index: " + wdg_idx)
 			#print "ID: " + str(work_item_id)
 			
 		
@@ -837,7 +837,7 @@ def setupMutationFromMarkedWedgesUI():
 		if anchor_node.type() != hou.nodeType("Top/wedge"):
 			raise Exception("No Wedge Node selected.")
 	except:
-		print "No Wedge Node selected."
+		print("No Wedge Node selected.")
 
 
 	wedge_sel_str = hou.ui.readInput("Enter Wedge Index List, i.e. '0_1,3_0,4_1'")[1]
@@ -859,7 +859,7 @@ def setupMutationFromMarkedWedgesUI():
 #function to create new root wedge node from current mutagen viewer selection
 def setupMutationFromMarkedWedges(marked_idx_list, wedge_anchor_node, mode):
 
-	print "\n\nSetup Starting...\n"
+	print("\n\nSetup Starting...\n")
 	
 	idx_list = marked_idx_list
 	wedge_node = wedge_anchor_node
@@ -870,11 +870,11 @@ def setupMutationFromMarkedWedges(marked_idx_list, wedge_anchor_node, mode):
 
 	#print mode
 	if setup_mode == 0:
-		print "Mode: Convert to Takes (del. existing Takes)\n"
+		print("Mode: Convert to Takes (del. existing Takes)\n")
 	elif setup_mode == 1:
-		print "Mode: Convert to Takes (keep existing Takes)\n"
+		print("Mode: Convert to Takes (keep existing Takes)\n")
 	elif setup_mode == 2:
-		print "Mode: Convert to TOP Wedge (del. existing Takes)\n"
+		print("Mode: Convert to TOP Wedge (del. existing Takes)\n")
 
 
 
@@ -888,7 +888,7 @@ def setupMutationFromMarkedWedges(marked_idx_list, wedge_anchor_node, mode):
 
 	#get root take
 	roottake = hou.takes.rootTake()
-	print "Root Take: {}".format(roottake.name())
+	print("Root Take: {}".format(roottake.name()))
 
 
 
@@ -925,7 +925,7 @@ def setupMutationFromMarkedWedges(marked_idx_list, wedge_anchor_node, mode):
 	hou.hscript("takeautomode off")
 
 
-	print "\nSuccessfully converted Wedges to Takes\n"
+	print("\nSuccessfully converted Wedges to Takes\n")
 
 
 	
