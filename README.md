@@ -49,7 +49,7 @@ It also includes a **Mutagen Shelf** containing additional utility tools
 **PDG Mutagen** is in prototype stage and for experimental use.
 It may contain bugs and the code is not fully cleaned up. Feel free to customize and enhance to your needs.
 
-*Compatible with **Houdini 17.5.x | Tested with 17.5.299***
+*Compatible with **Houdini 19.x.x | Tested with 19.0.622***
 
 <br>
 
